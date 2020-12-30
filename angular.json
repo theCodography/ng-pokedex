@@ -146,5 +146,8 @@
       }
     }
   },
-  "defaultProject": "pokedex-angular"
+  "defaultProject": "pokedex-angular",
+  "cli": {
+    "analytics": false
+  }
 }
