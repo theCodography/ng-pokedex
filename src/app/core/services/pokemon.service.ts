@@ -34,14 +34,14 @@ export class PokemonService {
 
           let pokemon = new Pokemon(id, name, img, type_1, type_2);
 
-          pokeList.sort((a,b) => {
+          pokeList.sort((a, b) => {
             return a.id - b.id;
-          })
+          });
           pokeList.push(pokemon);
         });
       });
     });
-    console.log(pokeList);
+    // console.log(pokeList);
     return pokeList;
   }
   //* Get Pokemon by name

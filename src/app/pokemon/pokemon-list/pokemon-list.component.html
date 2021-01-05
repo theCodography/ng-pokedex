@@ -3,7 +3,7 @@
   <div class="row">
     <div *ngFor="let poke of pokemon" class="col-md-3 col-sm-4 col-6">
       <div class="card card__pokemon">
-        <a href="#" class="pokemon__info-link">
+        <a routerLink="/pokemon/{{ poke.name }}" class="pokemon__info-link">
           <div class="pokemon__info">
             <img class="card-img-top" [src]="poke.imgUrl" alt="" />
           </div>

@@ -1,0 +1,68 @@
+<div
+  class="pokemon-main d-flex justify-content-between align-items-center"
+  *ngIf="pokemonCurrent"
+>
+  <div class="pokemon-main__left">
+    <div class="pokemon-main__types">
+      <span class="pokemon-main__title">Types</span>
+      <div class="pokemon-types">
+        <div class="pokemon__1-type">Poison</div>
+        <div class="pokemon__1-type">Grass</div>
+      </div>
+    </div>
+    <div class="pokemon-main__description">
+      <span class="pokemon-main__title">Species</span>
+      <div class="pokemon-main__description-content">
+        There is a plant seed on its back right from the day this POKéMON is
+        born. The seed slowly grows larger.
+      </div>
+    </div>
+  </div>
+  <div class="pokemon-main__center">
+    <div class="pokemon-main__center-img">
+      <img
+        [src]="
+          pokemonCurrent['sprites']?.other['official-artwork'][
+            'front_default'
+          ]
+        "
+      />
+    </div>
+  </div>
+  <div class="pokemon-main__right">
+    <div class="pokemon-info">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="pokemon-info__height">
+              <span class="pokemon-info__title">Height</span>
+              <span class="pokemon-info__value">1m</span>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="pokemon-info__category">
+              <span class="pokemon-info__title">Category</span>
+              <span class="pokemon-info__value">1m</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="pokemon-info__weight">
+              <span class="pokemon-info__title">Weight</span>
+              <span class="pokemon-info__value">1m</span>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="pokemon-info__gender">
+              <span class="pokemon-info__title">Gender</span>
+              <span class="pokemon-info__value">1m</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <h2>{{ pokemon.types[0].type.name }}</h2> -->
+</div>

@@ -1,0 +1,82 @@
+<div class="pokemon-base">
+  <div class="pokemon-components pokemon-abilities text-center">
+    <div class="pokemon-base__title">Abilities</div>
+    <div class="card">
+      <ul class="list-group" *ngIf="pokemonAbi.length === 2">
+        <li class="list-group-item">
+          {{ pokemonAbi[0]?.ability.name | titlecase }}
+        </li>
+        <li class="list-group-item">
+          {{ pokemonAbi[1]?.ability.name | titlecase }}
+        </li>
+      </ul>
+      <ul class="list-group" *ngIf="pokemonAbi.length === 3">
+        <div
+          class="ability d-flex justify-content-between "
+        >
+          <div class=" w-50">{{ pokemonAbi[0]?.ability.name | titlecase}}</div>
+          <span>or</span>
+          <div class=" w-50">{{ pokemonAbi[1]?.ability.name | titlecase }}</div>
+        </div>
+        <li class="list-group-item">
+          {{ pokemonAbi[2]?.ability.name | titlecase }}
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="pokemon-components text-center">
+    <div class="pokemon-base__title">Base Stats</div>
+    <div class="card">
+      <div class="stats">
+        <div class="progress-name">HP</div>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: 69%">
+            <!-- {{ pokemonCurrent?.stats[0]?.base_stat }} -->
+          </div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="progress-name">Attack</div>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: 75%">
+            <!-- {{ pokemonCurrent.stats[1].base_stat }} -->
+          </div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="progress-name">Defense</div>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: 75%">
+            <!-- {{ pokemonCurrent.stats[2].base_stat }} -->
+          </div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="progress-name">Sp. Attack</div>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: 100%">
+            <!-- {{ pokemonCurrent.stats[3].base_stat }} -->
+          </div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="progress-name">Sp. Defense</div>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: 100%">
+            <!-- {{ pokemonCurrent.stats[4].base_stat }} -->
+          </div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="progress-name">Speed</div>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: 69%">
+            <!-- {{ pokemonCurrent.stats[5].base_stat }} -->
+          </div>
+        </div>
+      </div>
+
+      <div class="base-total">TOTAL 318</div>
+    </div>
+  </div>
+</div>
