@@ -7,10 +7,11 @@ import { PokemonSingleComponent } from './pokemon-single/pokemon-single.componen
 import { PokemonSingleSliderComponent } from './pokemon-single/pokemon-single-slider/pokemon-single-slider.component';
 import { PokemonSingleMainComponent } from './pokemon-single/pokemon-single-main/pokemon-single-main.component';
 import { PokemonSingleBaseComponent } from './pokemon-single/pokemon-single-base/pokemon-single-base.component';
+import { PokemonListImgComponent } from './pokemon-list/pokemon-list-img/pokemon-list-img.component';
 
 
 @NgModule({
-  declarations: [PokemonListComponent, PokemonSingleComponent, PokemonSingleSliderComponent, PokemonSingleMainComponent, PokemonSingleBaseComponent],
+  declarations: [PokemonListComponent, PokemonSingleComponent, PokemonSingleSliderComponent, PokemonSingleMainComponent, PokemonSingleBaseComponent, PokemonListImgComponent],
   imports: [
     CommonModule,
     PokemonRoutingModule

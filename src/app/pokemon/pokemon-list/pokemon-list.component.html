@@ -1,25 +1,37 @@
-
 <div class="container">
   <div class="row">
     <div *ngFor="let poke of pokemon" class="col-md-3 col-sm-4 col-6">
       <div class="card card__pokemon">
-        <a routerLink="/pokemon/{{ poke.name }}" class="pokemon__info-link">
-          <div class="pokemon__info">
-            <img class="card-img-top" [src]="poke.imgUrl" alt="" />
-          </div>
-        </a>
-
-        <div class="card-body">
+        <app-pokemon-list-img [pokemonImg]="poke"> </app-pokemon-list-img>
+        <div
+          class="card-body"
+          [style.background]="'rgba(' + poke.color + ',0.65)'"
+          [style.border-color]="'rgba(' + poke.color + ',0.7)'"
+        >
           <p class="pokemon__name">
             {{ poke.name }}
           </p>
-          <div *ngIf="poke.type_2 !== undefined" class="pokemon__types">
-            <button class="pokemon__2-type">{{ poke.type_1 }}</button>
-            <button class="pokemon__2-type">{{ poke.type_2 }}</button>
+          <div *ngIf="poke.types[1]" class="pokemon__types">
+            <button
+              class="pokemon__2-type"
+              [style.color]="'rgba(' + poke.textColor + ',1)'"
+            >
+              {{ poke.types[0].type.name }}
+            </button>
+            <button
+              class="pokemon__2-type"
+              [style.color]="'rgba(' + poke.textColor + ',1)'"
+            >
+              {{ poke.types[1].type.name }}
+            </button>
           </div>
-          <div *ngIf="poke.type_2 === undefined" class="pokemon__types">
-            <button class="pokemon__1-type">{{ poke.type_1 }}</button>
-            <!-- <button class="pokemon__2-type">{{ poke.type_2 }}</button> -->
+          <div *ngIf="poke.types[1] === undefined" class="pokemon__types">
+            <button
+              class="pokemon__1-type"
+              [style.color]="'rgba(' + poke.textColor + ',1)'"
+            >
+              {{ poke.types[0].type.name }}
+            </button>
           </div>
         </div>
       </div>

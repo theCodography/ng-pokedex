@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { HomeComponent } from './home/home.component';
 import { PokemonModule } from './pokemon/pokemon.module';
+import { PokemonService } from './core/services/pokemon.service';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,7 @@ import { PokemonModule } from './pokemon/pokemon.module';
     HttpClientModule,
     PokemonModule
   ],
-  providers: [],
+  providers: [PokemonService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

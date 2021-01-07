@@ -19,13 +19,16 @@
     </div>
   </div>
   <div class="pokemon-main__center">
-    <div class="pokemon-main__center-img">
-      <img
+    <div class="pokemon-main__center-img"
+    [style.background]="'rgba(' + color + ',0.9)'"
+    >
+      <img class="card-img-top"
         [src]="
           pokemonCurrent['sprites']?.other['official-artwork'][
             'front_default'
           ]
         "
+        crossorigin
       />
     </div>
   </div>

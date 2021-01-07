@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-pokemon-single-main',
@@ -7,9 +7,15 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class PokemonSingleMainComponent implements OnInit {
   @Input() pokemonCurrent: any;
-  constructor() { }
+  @Input() color: any;
+  constructor(private element: ElementRef) { }
 
   ngOnInit(): void {
+
+  }
+
+  ngAfterViewInit() {
+    // console.log(this.element.nativeElement.children);
   }
 
 }
