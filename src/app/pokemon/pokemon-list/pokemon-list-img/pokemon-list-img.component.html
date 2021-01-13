@@ -1,10 +1,10 @@
 <a routerLink="/pokemon/{{ pokemonImg.name }}" class="pokemon__info-link">
   <div
     class="pokemon__info"
-    [style.background]="'rgba(' + pokemonImg.color + ',0.9)'"
-    [style.border-color]="'rgba(' + pokemonImg.color + ',0.7)'"
-  >
 
-    <img class="card-img-top" [src]="pokemonImg.sprites.other['official-artwork']['front_default']" alt="" crossorigin />
+  >
+  <!-- [style.background]="'rgba(' + pokemonImg.color + ',0.9)'"
+  [style.border-color]="'rgba(' + pokemonImg.color + ',0.7)'" -->
+    <img class="card-img-top" [src]="pokemonImg.sprite" alt="" crossorigin />
   </div>
 </a>

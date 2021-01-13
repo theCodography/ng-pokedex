@@ -3,34 +3,27 @@
     <div *ngFor="let poke of pokemon" class="col-md-3 col-sm-4 col-6">
       <div class="card card__pokemon">
         <app-pokemon-list-img [pokemonImg]="poke"> </app-pokemon-list-img>
-        <div
-          class="card-body"
-          [style.background]="'rgba(' + poke.color + ',0.65)'"
-          [style.border-color]="'rgba(' + poke.color + ',0.7)'"
-        >
+        <div class="card-body">
           <p class="pokemon__name">
             {{ poke.name }}
           </p>
-          <div *ngIf="poke.types[1]" class="pokemon__types">
-            <button
-              class="pokemon__2-type"
-              [style.color]="'rgba(' + poke.textColor + ',1)'"
-            >
-              {{ poke.types[0].type.name }}
+          <!-- [style.color]="'rgba(' + poke.textColor + ',1)'" -->
+          <!-- [style.background]="'rgba(' + poke.color + ',0.65)'"
+          [style.border-color]="'rgba(' + poke.color + ',0.7)'" -->
+          <!-- [style.color]="'rgba(' + poke.textColor + ',1)'" -->
+          <!-- [style.color]="'rgba(' + poke.textColor + ',1)'" -->
+          <!-- [style.color]="'rgba(' + poke.textColor + ',1)'" -->
+          <div *ngIf="poke.types.length === 2" class="pokemon__types">
+            <button class="pokemon__2-type">
+              {{ poke.types[0].type }}
             </button>
-            <button
-              class="pokemon__2-type"
-              [style.color]="'rgba(' + poke.textColor + ',1)'"
-            >
-              {{ poke.types[1].type.name }}
+            <button class="pokemon__2-type">
+              {{ poke.types[1].type }}
             </button>
           </div>
-          <div *ngIf="poke.types[1] === undefined" class="pokemon__types">
-            <button
-              class="pokemon__1-type"
-              [style.color]="'rgba(' + poke.textColor + ',1)'"
-            >
-              {{ poke.types[0].type.name }}
+          <div *ngIf="poke.types.length === 1" class="pokemon__types">
+            <button class="pokemon__1-type">
+              {{ poke.types[0].type }}
             </button>
           </div>
         </div>

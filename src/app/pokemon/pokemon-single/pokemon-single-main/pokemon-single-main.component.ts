@@ -8,6 +8,7 @@ import { Component, ElementRef, Input, OnInit } from '@angular/core';
 export class PokemonSingleMainComponent implements OnInit {
   @Input() pokemonCurrent: any;
   @Input() color: any;
+  @Input() species: any;
   constructor(private element: ElementRef) { }
 
   ngOnInit(): void {

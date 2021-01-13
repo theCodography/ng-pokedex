@@ -12,7 +12,7 @@ import { PokemonService } from './core/services/pokemon.service';
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
   ],
   imports: [
     BrowserModule,

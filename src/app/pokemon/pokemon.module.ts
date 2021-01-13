@@ -8,17 +8,21 @@ import { PokemonSingleSliderComponent } from './pokemon-single/pokemon-single-sl
 import { PokemonSingleMainComponent } from './pokemon-single/pokemon-single-main/pokemon-single-main.component';
 import { PokemonSingleBaseComponent } from './pokemon-single/pokemon-single-base/pokemon-single-base.component';
 import { PokemonListImgComponent } from './pokemon-list/pokemon-list-img/pokemon-list-img.component';
-
+import { FeetPipe } from '../shared/metrics/feet.pipe';
+import { PoundPipe } from '../shared/metrics/pound.pipe';
 
 @NgModule({
-  declarations: [PokemonListComponent, PokemonSingleComponent, PokemonSingleSliderComponent, PokemonSingleMainComponent, PokemonSingleBaseComponent, PokemonListImgComponent],
-  imports: [
-    CommonModule,
-    PokemonRoutingModule
-  ],
-  exports: [
+  declarations: [
     PokemonListComponent,
-    PokemonSingleComponent
-  ]
+    PokemonSingleComponent,
+    PokemonSingleSliderComponent,
+    PokemonSingleMainComponent,
+    PokemonSingleBaseComponent,
+    PokemonListImgComponent,
+    FeetPipe,
+    PoundPipe,
+  ],
+  imports: [CommonModule, PokemonRoutingModule],
+  exports: [PokemonListComponent, PokemonSingleComponent],
 })
-export class PokemonModule { }
+export class PokemonModule {}
