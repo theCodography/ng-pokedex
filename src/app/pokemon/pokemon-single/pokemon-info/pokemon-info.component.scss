@@ -1,0 +1,39 @@
+
+.pokemon-main {
+  &__title {
+    font-size: 2.4rem;
+    display: block;
+    margin-bottom: 1.8rem;
+    font-weight: 600;
+  }
+}
+
+.pokemon-info {
+  border: 1px solid;
+  padding: 20px 20px 10px 20px;
+
+  border-radius: .75rem;
+  background-color: #fff;
+  &__container {
+    text-align: center;
+  }
+  &__wrapper{
+    background-color: white;
+    color: #333;
+    border: 1px solid rgba($color: #333333, $alpha: 0.4);
+    border-radius: .75rem;
+  }
+
+  &__title {
+    display: block;
+    color: rgba($color: #333333, $alpha: .4);
+    font-size: 1.2rem;
+  }
+  &__value {
+    font-size: 1.6rem;
+  }
+}
+
+.info-top {
+  margin-bottom: 10px;
+}

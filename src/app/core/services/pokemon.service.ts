@@ -4,11 +4,15 @@ import { map, mergeMap } from 'rxjs/operators';
 import { Pokemon } from 'src/app/models/pokemon.model';
 import { forkJoin, Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import ColorThief from 'node_modules/colorthief';
+import ColorThief from 'colorthief';
 import { PokemonList } from 'src/app/models/pokemon-list.model';
 import { PokemonEntry } from 'src/app/models/pokemon-entry.model';
 import * as _ from 'lodash';
 import { PokemonType } from 'src/app/models/pokemon-type.model';
+import { PokemonDescription } from 'src/app/models/pokemon-description.model';
+import { PokemonStats } from 'src/app/models/pokemon-stats.model';
+import { PokemonAbilityInfo } from 'src/app/models/pokemon-ability-info.model';
+import { PokemonAbility } from 'src/app/models/pokemon-ability.model';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'Application/json' }),
@@ -20,7 +24,7 @@ const apiUrl = 'https://pokeapi.co/api/v2/pokemon';
 })
 export class PokemonService {
   pokemon: Pokemon[] = [];
-
+  private _language = 'en';
   private _spriteBaseUrl: string =
     'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork';
   private _baseUrl: string = 'https://pokeapi.co/api/v2';
@@ -35,109 +39,136 @@ export class PokemonService {
       )
       .pipe(
         map((res) => {
-          // console.log(res);
           return this.getList(res);
         })
       );
   }
-  //* Get List Pokemon
+  //* Find One Pokemon
+  findOne(id: number): Observable<Pokemon> {
+    const colorThief = new ColorThief();
+    let color: number[];
+    let img = new Image();
+
+    return forkJoin(
+      this.http.get(`${this._baseUrl}/pokemon/${id}/`),
+      this.http.get(`${this._baseUrl}/pokemon-species/${id}/`)
+    ).pipe(
+      map((data) => {
+        this.loadImage(`${this._spriteBaseUrl}/${id}.png`, img).then((ele) => {
+          let pal = colorThief.getPalette(ele, 5);
+          pkmEntry.color = pal[0];
+        });
+        let pkmEntry = new PokemonEntry(
+          data[0]['id'],
+          _.capitalize(data[0]['name']),
+          `${this._spriteBaseUrl}/${data[0]['id']}.png`,
+          color
+        );
+        return new Pokemon(
+          pkmEntry,
+          new PokemonAbilityInfo(
+            data[0]['height'],
+            data[0]['weight'],
+            this.getAbilities(data[0]['abilities']),
+            this.getCategory(data[1]['genera'])
+          ),
+          this.getDescriptions(data[1]['flavor_text_entries']),
+          this.getTypes(data[0]['types']),
+          this.getStats(data[0]['stats'])
+        );
+      })
+    );
+  }
+
+  //* Get list pokemon
   getList(data): PokemonList {
     // Manually filter all pokémons above 10000 since these are not official but mega evolutions
-    let results = [];
-    data.results
-      .map((result) => {
-        return this.getEntry(result).then((res) => {
-          results.push(res);
-          results.sort((a,b) => a.id-b.id)
-        });
-      })
+    let results = data.results
+      .map((result) => this.getEntry(result))
       .filter((entry) => entry.id < 10000);
-      console.log(results);
     // Manually override count to 721 to exclude mega's
     return new PokemonList(results, 721);
   }
-  //* Get entry Pokemon
-  async getEntry(data): Promise<PokemonEntry> {
+  //* Get pokemon entry
+  getEntry(data): PokemonEntry {
     const matches = this._detailRegex.exec(data.url),
       id = matches == null ? null : parseInt(matches[1]),
       sprite = id == null ? null : `${this._spriteBaseUrl}/${id}.png`;
-    console.log();
-
-    let types: PokemonType[] = [];
-
-    await fetch(data.url)
-      .then((data) => data.json())
-      .then((d) => {
-        types = this.getTypes(d['types']);
-      });
-    return new PokemonEntry(id, _.capitalize(data.name), sprite, types);
+    let color = [];
+    let pkmEntry = new PokemonEntry(id, _.capitalize(data.name), sprite, color);
+    this.http.get(`${this._baseUrl}/pokemon/${data.name}/`).subscribe((res) => {
+      pkmEntry.type = this.getTypes(res['types']);
+    });
+    const colorThief = new ColorThief();
+    let img = new Image();
+    this.loadImage(`${this._spriteBaseUrl}/${id}.png`, img).then((ele) => {
+      let pal = colorThief.getPalette(ele, 5);
+      pkmEntry.color = pal[0];
+    });
+    return pkmEntry;
   }
 
+   loadImage(url, elem) {
+    return new Promise((resolve, reject) => {
+      elem.onload = () => resolve(elem);
+      elem.onerror = reject;
+      elem.src = url;
+      elem.crossOrigin = 'true';
+      return elem;
+    });
+  }
+  //* Get Abilities
+  getAbilities(abilities: any[]): PokemonAbility[] {
+    return abilities
+      .map(
+        (ability) =>
+          new PokemonAbility(
+            _.startCase(ability.ability.name),
+            ability['is_hidden'],
+            ability.slot
+          )
+      )
+      .sort((ability1, ability2) => ability1.order - ability2.order);
+  }
+  //* Get Category
+  getCategory(genera: any[]): string {
+    return genera.find((genera) => genera.language.name === this._language)
+      .genus;
+  }
   //* Get types of pokemon
   getTypes(types: any[]): PokemonType[] {
     return types
       .map((type) => new PokemonType(type.type.name, type.slot))
       .sort((type1, type2) => type1.order - type2.order);
   }
-  // getAllPokemon(): Observable<Pokemon[]> {
-  //   let urls = [];
-  //   let ObjPokemon: Pokemon;
-
-  //   for (let i = 1; i < 41; i++) {
-  //     urls.push(this.http.get<Pokemon[]>(`${apiUrl}/${i}`).pipe());
-  //   }
-  //   return forkJoin<Pokemon>(urls);
-  // }
-
-  //* Get Pokemon by name
-  find(name: string): Observable<Pokemon> {
-    return this.http.get<Pokemon>(`${apiUrl}/${name}`).pipe();
+  //* Get Species
+  getDescriptions(entries: any[]): PokemonDescription[] {
+    return entries
+      .filter((entry) => entry.language.name === this._language)
+      .map(
+        (entry) =>
+          new PokemonDescription(
+            entry['flavor_text'],
+            _.startCase(_.replace(entry.version.name, '-', ' '))
+          )
+      );
   }
-  findSpecies(url: string) {
-    return this.http.get(url).pipe();
+  // * Get Base Stats
+  getStats(stats: any[]): PokemonStats {
+    return new PokemonStats(
+      stats.find((stat) => stat.stat.name === 'hp')['base_stat'],
+      stats.find((stat) => stat.stat.name === 'attack')['base_stat'],
+      stats.find((stat) => stat.stat.name === 'defense')['base_stat'],
+      stats.find((stat) => stat.stat.name === 'special-attack')['base_stat'],
+      stats.find((stat) => stat.stat.name === 'special-defense')['base_stat'],
+      stats.find((stat) => stat.stat.name === 'speed')['base_stat']
+    );
   }
-  //* Get Color
 
-  getColor(pokemon) {
-    const colorThief = new ColorThief();
-    let pkm: Pokemon[] = pokemon;
-    let colorList = [];
-    let colorTextList = [];
-    function fill() {
-      let images = document.getElementsByClassName('card-img-top');
-      Array.from(images).forEach((img) => {
-        if (img) {
-          let color = colorThief.getPalette(img, 5);
-          // console.log(color[0]);
-          let colorText = color[0].map((c) => {
-            return c - 50;
-          });
-          colorList.push(color[0]);
-          colorTextList.push(colorText);
-        }
-      });
-
-      for (const p in pkm) {
-        if (localStorage.length <= Number(p) * 2) {
-          pkm[p].color = colorList[p];
-          pkm[p].textColor = colorTextList[p];
-          localStorage.setItem(`${p}color`, colorList[p]);
-          localStorage.setItem(`${p}colorText`, colorTextList[p]);
-        } else {
-          pkm[p].color = localStorage.getItem(`${p}color`);
-          pkm[p].textColor = localStorage.getItem(`${p}colorText`);
-        }
-      }
-    }
-
-    if (document.readyState === 'complete') {
-      fill();
-    } else {
-      document.onreadystatechange = function () {
-        if (document.readyState === 'complete') {
-          fill();
-        }
-      };
-    }
+  //! Get dark Color
+  getDark(style ={}, color) {
+    return Object.assign({}, style, {
+      color: 'rgb(' + color + ')',
+    });
   }
 }

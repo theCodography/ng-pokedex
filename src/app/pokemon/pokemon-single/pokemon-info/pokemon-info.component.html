@@ -1,0 +1,39 @@
+<span class="pokemon-main__title" [style]="style">Information</span>
+<div class="pokemon-info">
+  <div class="container">
+    <div class="row info-top">
+      <div class="col-md-6">
+        <div class="pokemon-info__container">
+          <div class="pokemon-info__wrapper pokemon-info__height">
+            <span class="pokemon-info__value">
+              {{ info.height | feet: "dm" }}
+            </span>
+          </div>
+          <span class="pokemon-info__title">Height</span>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="pokemon-info__container">
+          <div class="pokemon-info__wrapper pokemon-info__weight">
+            <span class="pokemon-info__value">
+              {{ info.weight | pound: "hg":1 }}
+            </span>
+          </div>
+          <span class="pokemon-info__title">Weight</span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <div class="pokemon-info__container">
+          <div class="pokemon-info__wrapper pokemon-info__category">
+            <span class="pokemon-info__value">
+              {{ info.category }}
+            </span>
+          </div>
+          <span class="pokemon-info__title">Category</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<div class="pokemon-main__types" [style]="style" *ngIf="types">
+  <span class="pokemon-main__title">Types</span>
+  <div class="pokemon-types" *ngFor="let type of types">
+    <ng-container *ngIf="types.length === 1; else twoType">
+      <div class="pokemon__1-type">
+        {{ type.type }}
+      </div>
+      <div class="pokemon__1-type" [style.visibility]="'hidden'">
+        {{ type.type }}
+      </div>
+    </ng-container>
+    <ng-template #twoType>
+      <div class="pokemon__1-type">
+        {{ type.type }}
+      </div>
+    </ng-template>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="pokemon-abilities text-center" *ngIf="ability">
+  <div class="pokemon-base__title" [style]="style">Abilities</div>
+
+  <div class="ability__wrapper">
+    <ng-container *ngIf="ability.length < 3; else threeAbility">
+      <ng-container *ngFor="let abi of ability">
+        <ng-template #hidden>
+          <div id="isHidden" class="ability__item isHidden">
+            <div class="hidden">Hidden</div>
+            <div id="hiddenValue" class="value">
+              <p>
+                {{ abi.name }}
+              </p>
+            </div>
+          </div>
+        </ng-template>
+        <div class="ability__item" *ngIf="!abi.hidden; else hidden">
+          {{ abi.name }}
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-template #threeAbility>
+      <div class="ability d-flex justify-content-between">
+        <div class="ability__item w-50">
+          {{ ability[0].name }}
+        </div>
+        <span>or</span>
+        <div class="ability__item w-50">
+          {{ ability[1].name }}
+        </div>
+      </div>
+      <div id="isHidden" class="ability__item isHidden">
+        <div class="hidden">Hidden</div>
+        <div id="hiddenValue" class="value">
+          <p>
+            {{ ability[2].name }}
+          </p>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

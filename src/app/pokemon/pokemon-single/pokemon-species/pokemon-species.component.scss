@@ -1,0 +1,28 @@
+.pokemon-main {
+  &__title {
+    font-size: 2.4rem;
+    display: block;
+    margin-bottom: 1.8rem;
+    font-weight: 600;
+  }
+}
+
+.pokemon-main {
+  &__description {
+    &-content {
+      background-color: #fff;
+      font-size: 1.5rem;
+      border-radius: .75rem;
+      padding: 1.2rem;
+      p {
+        font-size: 16px;
+        height: 130px;
+        border: 1px solid rgba($color: #333333, $alpha: 0.3);
+        border-radius: .75rem;
+        padding: 1.2rem;
+        color: #666;
+        text-align: center;
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PokemonService } from 'src/app/core/services/pokemon.service';
+
 import { Pokemon } from 'src/app/models/pokemon.model';
 
 @Component({
@@ -9,41 +10,54 @@ import { Pokemon } from 'src/app/models/pokemon.model';
   styleUrls: ['./pokemon-single.component.scss'],
 })
 export class PokemonSingleComponent implements OnInit {
-  pokemonCurrent = new Pokemon();
-  species;
-  color;
-  abilities = [];
+  @Input() message;
+  pokemonCurrent: Pokemon;
+  pokemonBefore: Pokemon;
+  pokemonNext: Pokemon;
+  style: { [key: string]: string } = {};
   constructor(
     private pokemonService: PokemonService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    // this.route.params.subscribe((params) => {
-    //   const name = params['name'];
-    //   //* use user service to get data of users from github api
-    //   this.pokemonService.getPokemon(name).subscribe((pokemon) => {
-    //     this.color = localStorage.getItem(`${Number (pokemon['id']- 1)}color`);
-    //     this.pokemonCurrent = pokemon;
-    //     this.pokemonCurrent.abilities.forEach((element) => {
-    //       this.abilities.push(element);
-    //     });
-    //   }); //* bind that to a user variable
-    // });
-    this.pokemonService.findAll();
-    this.getRoute(this.route.snapshot.params['name']);
+    this.getRoute(+this.route.snapshot.params['id']);
+  }
+  ngAfterContentChecked() {
+    if (this.pokemonCurrent?.baseInfo?.color) {
+      this.style = Object.assign({}, this.style, {
+        color: 'rgb(' + this.pokemonCurrent.baseInfo.textColor + ')',
+      });
+    }
+  }
+  ngAfterViewChecked() {
+    if (
+      document.location.pathname.split('/')[2] !==
+      this.route.snapshot.params['id']
+    ) {
+      this.getRoute(document.location.pathname.split('/')[2]);
+    }
+  }
+  getRoute(id: any) {
+    this.pokemonService.findOne(id).subscribe((data: any) => {
+      this.pokemonCurrent = data;
+    });
+    this.pokemonService.findOne(Number(id) + 1).subscribe((data: any) => {
+      this.pokemonNext = data;
+    });
+    this.pokemonService.findOne(Number(id) - 1).subscribe((data: any) => {
+      this.pokemonBefore = data;
+    });
   }
 
-  getRoute(name: any) {
-    this.pokemonService.find(name).subscribe((pokemon: any) => {
-      this.color = localStorage.getItem(`${Number(pokemon['id'] - 1)}color`);
-      // console.log(pokemon['species']['url']);
-      this.pokemonService
-        .findSpecies(pokemon['species']['url'])
-        .subscribe((spec) => {
-          this.species = spec;
-        });
-      this.pokemonCurrent = pokemon;
-    });
+  clickBack() {
+    let itemId = this.pokemonCurrent.baseInfo.id;
+    if (itemId > 1) {
+      this.getRoute(itemId - 1);
+    }
+  }
+  clickNext() {
+    let itemId = this.pokemonCurrent.baseInfo.id;
+    this.getRoute(itemId + 1);
   }
 }

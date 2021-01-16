@@ -15,29 +15,17 @@ export class PokemonListComponent implements OnInit {
   count: number = 0;
   offset: number = 0;
   limit: number = 20;
+  textColor;
   constructor(private pokemonService: PokemonService) {}
 
   ngOnInit(): void {
-    // this.getAllPokemon();
     this.findAll(this.offset, this.limit);
   }
-  // getAllPokemon() {
-  //   this.pokemonService.getAllPokemon().subscribe((results) => {
-  //     // console.log(results);
-  //     this.pokemon = results;
-  //     this.pokemonService.getColor(this.pokemon);
-  //   });
-  // }
   findAll(offset: number, limit: number) {
     this.pokemon = [];
-    this.pokemonService
-      .findAll(offset, limit)
-      .toPromise()
-      .then((response) => {
-        // console.log(response);
-        this.pokemon = response.pokemons;
-        this.count = response.count;
-        this.pokemonService.getColor(this.pokemon);
-      });
+    this.pokemonService.findAll(offset, limit).subscribe((result) => {
+      this.pokemon = result.pokemons;
+      this.count = result.count;
+    });
   }
 }

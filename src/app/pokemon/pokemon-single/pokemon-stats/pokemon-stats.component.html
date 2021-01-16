@@ -1,0 +1,89 @@
+<!--* POKEMON BASE STATS -->
+<div class="pokemon-components text-center" *ngIf="pokemonCurrent">
+  <div class="pokemon-base__title" [style]="style">Base Stats</div>
+  <div class="card">
+    <div class="stats">
+      <div class="progress-name">HP</div>
+      <div class="progress">
+        <div
+          class="progress-bar"
+          role="progressbar"
+          [style.width]="getStatPercent(pokemonCurrent, pokemonCurrent.hp)"
+        >
+          {{ pokemonCurrent.hp }}
+        </div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="progress-name">Attack</div>
+      <div class="progress">
+        <div
+          class="progress-bar"
+          role="progressbar"
+          [style.width]="getStatPercent(pokemonCurrent, pokemonCurrent.attack)"
+        >
+          {{ pokemonCurrent.attack }}
+        </div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="progress-name">Defense</div>
+      <div class="progress">
+        <div
+          class="progress-bar"
+          role="progressbar"
+          [style.width]="getStatPercent(pokemonCurrent, pokemonCurrent.defense)"
+        >
+          {{ pokemonCurrent.defense }}
+        </div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="progress-name">Sp. Attack</div>
+      <div class="progress">
+        <div
+          class="progress-bar"
+          role="progressbar"
+          [style.width]="
+            getStatPercent(pokemonCurrent, pokemonCurrent.specialAttack)
+          "
+        >
+          {{ pokemonCurrent.specialAttack }}
+        </div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="progress-name">Sp. Defense</div>
+      <div class="progress">
+        <div
+          class="progress-bar"
+          role="progressbar"
+          [style.width]="
+            getStatPercent(pokemonCurrent, pokemonCurrent.specialDefense)
+          "
+        >
+          {{ pokemonCurrent.specialDefense }}
+        </div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="progress-name">Speed</div>
+      <div class="progress">
+        <div
+          class="progress-bar"
+          role="progressbar"
+          [style.width]="getStatPercent(pokemonCurrent, pokemonCurrent.speed)"
+        >
+          {{ pokemonCurrent.speed }}
+        </div>
+      </div>
+    </div>
+
+    <div class="base-total">
+      TOTAL
+      <span [style]="style">
+        {{ getTotal(pokemonCurrent) }}
+      </span>
+    </div>
+  </div>
+</div>

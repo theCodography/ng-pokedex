@@ -1,18 +1,140 @@
-<section class="section">
+<section
+  class="section"
+  *ngIf="pokemonCurrent"
+  [style.background]="'rgba(' + [pokemonCurrent.baseInfo.color] + ',.8)'"
+  id="top"
+>
   <div class="container">
     <div class="pokemon-detail">
-      <app-pokemon-single-slider
-        [pokemonCurrent]="pokemonCurrent"
+      <!-- *Slider -->
+      <div class="pokemon-detail__slider">
+        <div
+          class="pokemon-slider d-flex justify-content-between"
+          [style]="style"
+        >
+          <!--* Slider Left  -->
+          <div
+            class="pokemon-slider__wrapper pokemon-slider__left d-flex align-items-center justify-content-start"
+            *ngIf="pokemonCurrent.baseInfo.id > 1; else noSlider"
+          >
+            <a
+              class="pokemon-slider__link"
+              (click)="clickBack()"
+              [routerLink]="['/pokemon', pokemonCurrent.baseInfo.id - 1]"
+            >
+              <i
+                class="fas fa-chevron-circle-left"
+                [style.color]="'rgb(' + [pokemonCurrent.baseInfo.darkColor] + ')'"
+              ></i>
+            </a>
 
-      ></app-pokemon-single-slider>
-      <app-pokemon-single-main
-        [pokemonCurrent]="pokemonCurrent"
-        [color] = "color"
-        [species] = "species"
-      ></app-pokemon-single-main>
-      <app-pokemon-single-base
-        [pokemonAbi]="abilities"
-      ></app-pokemon-single-base>
+            <span
+              class="pokemon-slider__sub-name pokemon-slider__sub-name--left"
+              *ngIf="pokemonBefore"
+            >
+              {{ pokemonBefore.baseInfo.name }}
+            </span>
+          </div>
+          <ng-template #noSlider>
+            <div
+              class="pokemon-slider__wrapper pokemon-slider__left d-flex align-items-center"
+              style="visibility: hidden"
+            >
+              <a class="pokemon-slider__link">
+                <i class="fas fa-chevron-circle-left"></i>
+              </a>
+
+              <span
+                class="pokemon-slider__sub-name pokemon-slider__sub-name--left"
+              >
+                None
+              </span>
+            </div>
+          </ng-template>
+          <!--* Slider Center -->
+          <div class="pokemon-slider__wrapper pokemon-slider__main d-flex flex-column text-center">
+            <div class="pokemon-slider__main-id">
+              #{{ pokemonCurrent.baseInfo.id | number: "3.0" }}
+            </div>
+            <div
+              class="pokemon-slider__main-name"
+              [style.color]="'rgb(' + [pokemonCurrent.baseInfo.darkColor] + ')'"
+            >
+              {{ pokemonCurrent.baseInfo.name }}
+            </div>
+          </div>
+          <!--* Slider Right  -->
+          <div
+            class="pokemon-slider__wrapper pokemon-slider__right d-flex align-items-center justify-content-end"
+          >
+            <span
+              class="pokemon-slider__sub-name pokemon-slider__sub-name--right"
+              *ngIf="pokemonNext"
+            >
+              {{ pokemonNext.baseInfo.name }}
+            </span>
+            <a
+              class="pokemon-slider__link"
+              (click)="clickNext()"
+              routerLink="/pokemon/{{ pokemonCurrent.baseInfo.id + 1 }}"
+            >
+              <i
+                class="fas fa-chevron-circle-right"
+                [style.color]="'rgb(' + [pokemonCurrent.baseInfo.darkColor] + ')'"
+              ></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- *Main -->
+      <div
+        class="pokemon-main d-flex justify-content-between align-items-center"
+      >
+        <!-- *LEFT -->
+        <div class="pokemon-main__left">
+          <!-- *Type -->
+          <app-pokemon-types
+            [types]="pokemonCurrent?.types"
+            [baseInfo]="pokemonCurrent?.baseInfo"
+          ></app-pokemon-types>
+          <!-- *Des -->
+          <app-pokemon-species
+            [description]="pokemonCurrent?.descriptions"
+            [baseInfo]="pokemonCurrent?.baseInfo"
+          >
+          </app-pokemon-species>
+        </div>
+        <!-- *CENTER -->
+        <div class="pokemon-main__center">
+          <div class="pokemon-main__center-img">
+            <img
+              class="card-img-top"
+              [src]="pokemonCurrent.baseInfo.sprite"
+              crossorigin
+            />
+          </div>
+        </div>
+        <!-- *RIGHT -->
+        <div class="pokemon-main__right">
+          <app-pokemon-info
+            [info]="pokemonCurrent?.abilityInfo"
+            [baseInfo]="pokemonCurrent?.baseInfo"
+          ></app-pokemon-info>
+        </div>
+      </div>
+      <!-- *Base -->
+      <div class="pokemon-base d-flex justify-content-between">
+        <app-pokemon-ability
+          class="pokemon-base-child"
+          [baseInfo]="pokemonCurrent?.baseInfo"
+          [ability]="pokemonCurrent?.abilityInfo?.abilities"
+        ></app-pokemon-ability>
+        <app-pokemon-stats
+          class="pokemon-base-child align-self-center"
+          [baseInfo]="pokemonCurrent?.baseInfo"
+          [pokemonCurrent]="pokemonCurrent?.stats"
+        ></app-pokemon-stats>
+      </div>
     </div>
   </div>
 </section>
