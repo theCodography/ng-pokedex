@@ -14,13 +14,16 @@ export class PokemonSpeciesComponent implements OnInit {
   style: { [key: string]: string } = {};
   constructor(private pokemonService: PokemonService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // console.log(this.description);
+  }
   ngAfterContentChecked() {
     if (this?.baseInfo?.color) {
       this.style = this.pokemonService.getDark(
         this.style,
         this.baseInfo.darkColor
       );
+
     }
   }
 }

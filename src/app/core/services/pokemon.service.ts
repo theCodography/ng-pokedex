@@ -13,6 +13,7 @@ import { PokemonDescription } from 'src/app/models/pokemon-description.model';
 import { PokemonStats } from 'src/app/models/pokemon-stats.model';
 import { PokemonAbilityInfo } from 'src/app/models/pokemon-ability-info.model';
 import { PokemonAbility } from 'src/app/models/pokemon-ability.model';
+import { EvolutionChain } from 'src/app/models/evolution-chain.model';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'Application/json' }),
@@ -43,12 +44,18 @@ export class PokemonService {
         })
       );
   }
+  getData(id: number = 0, limit: number = 1) {
+    return this.http
+      .get(`${this._baseUrl}/pokemon/?offset=${id}&limit=${limit}`)
+      .pipe(map((res) => {
+        return this.getEntry(res['results'][0])}));
+  }
   //* Find One Pokemon
   findOne(id: number): Observable<Pokemon> {
     const colorThief = new ColorThief();
     let color: number[];
     let img = new Image();
-
+    let evoChain: EvolutionChain[];
     return forkJoin(
       this.http.get(`${this._baseUrl}/pokemon/${id}/`),
       this.http.get(`${this._baseUrl}/pokemon-species/${id}/`)
@@ -64,7 +71,8 @@ export class PokemonService {
           `${this._spriteBaseUrl}/${data[0]['id']}.png`,
           color
         );
-        return new Pokemon(
+
+        let pokemon = new Pokemon(
           pkmEntry,
           new PokemonAbilityInfo(
             data[0]['height'],
@@ -74,8 +82,13 @@ export class PokemonService {
           ),
           this.getDescriptions(data[1]['flavor_text_entries']),
           this.getTypes(data[0]['types']),
-          this.getStats(data[0]['stats'])
+          this.getStats(data[0]['stats']),
+          evoChain
         );
+        this.http.get(data[1]['evolution_chain'].url).subscribe((data) => {
+          pokemon.evolutionChain = this.findEvolution(data);
+        });
+        return pokemon;
       })
     );
   }
@@ -108,7 +121,7 @@ export class PokemonService {
     return pkmEntry;
   }
 
-   loadImage(url, elem) {
+  loadImage(url, elem) {
     return new Promise((resolve, reject) => {
       elem.onload = () => resolve(elem);
       elem.onerror = reject;
@@ -145,13 +158,15 @@ export class PokemonService {
   getDescriptions(entries: any[]): PokemonDescription[] {
     return entries
       .filter((entry) => entry.language.name === this._language)
-      .map(
-        (entry) =>
-          new PokemonDescription(
-            entry['flavor_text'],
-            _.startCase(_.replace(entry.version.name, '-', ' '))
-          )
-      );
+      .map((entry) => {
+        let rep: string = entry['flavor_text'];
+        let re = /\f/gi;
+        let result = rep.replace(re, ' ');
+        return new PokemonDescription(
+          result,
+          _.startCase(_.replace(entry.version.name, '-', ' '))
+        );
+      });
   }
   // * Get Base Stats
   getStats(stats: any[]): PokemonStats {
@@ -165,8 +180,96 @@ export class PokemonService {
     );
   }
 
+  //* Find Evolution Chain
+
+  findEvolution(data): EvolutionChain[] {
+    let evoData = data.chain;
+    let evolutionChain: EvolutionChain[] = [];
+
+    let species_name;
+    let min_level;
+    let trigger_name;
+    let item;
+    let held_item;
+    let happiness;
+    let time_of_day;
+    let location;
+    let id;
+    let url;
+    let pokemonEntry: PokemonEntry;
+    // console.log(evoData);
+    do {
+      let evoDetails = evoData['evolution_details'][0];
+      let numberOfEvolutions = evoData['evolves_to'].length;
+      if (numberOfEvolutions > 1) {
+        for (let i = 1; i < numberOfEvolutions; i++) {
+          let evoDetails = evoData.evolves_to[i]['evolution_details'][0];
+          species_name = evoData.evolves_to[i].species.name;
+          url = evoData.evolves_to[i].species.url;
+          id = url.slice(42, url.lastIndexOf('/'));
+          min_level = !evoDetails ? 1 : evoDetails.min_level;
+          trigger_name = !evoDetails ? null : evoDetails.trigger.name;
+          item = !evoDetails ? null : evoDetails.item?.name;
+          held_item = !evoDetails ? null : evoDetails.held_item?.name;
+          happiness = !evoDetails ? null : evoDetails.min_happiness;
+          time_of_day = !evoDetails ? null : evoDetails.time_of_day;
+          location = !evoDetails ? null : evoDetails.location?.name;
+          let evoChain = new EvolutionChain(
+            species_name,
+            min_level,
+            trigger_name,
+            item,
+            held_item,
+            happiness,
+            time_of_day,
+            location,
+
+          )
+          this.getData(Number(id)-1).subscribe(res => {
+            evoChain.pokemonEntry = res;
+          });
+          evolutionChain.push(
+            evoChain
+          );
+        }
+      }
+
+      species_name = evoData.species.name;
+      url = evoData.species.url;
+      id = url.slice(42, url.lastIndexOf('/'));
+      min_level = !evoDetails ? 1 : evoDetails.min_level;
+      trigger_name = !evoDetails ? null : evoDetails.trigger.name;
+      item = !evoDetails ? null : evoDetails.item?.name;
+      held_item = !evoDetails ? null : evoDetails.held_item?.name;
+      happiness = !evoDetails ? null : evoDetails.min_happiness;
+      time_of_day = !evoDetails ? null : evoDetails.time_of_day;
+      location = !evoDetails ? null : evoDetails.location?.name;
+      let evoChain = new EvolutionChain(
+        species_name,
+        min_level,
+        trigger_name,
+        item,
+        held_item,
+        happiness,
+        time_of_day,
+        location,
+
+      )
+      this.getData(Number(id)-1).subscribe(res => {
+        evoChain.pokemonEntry = res;
+      });
+      evolutionChain.push(
+        evoChain
+      );
+
+      evoData = evoData['evolves_to'][0];
+    } while (!!evoData && evoData.hasOwnProperty('evolves_to'));
+    // console.log(evolutionChain);
+    return evolutionChain;
+  }
+
   //! Get dark Color
-  getDark(style ={}, color) {
+  getDark(style = {}, color) {
     return Object.assign({}, style, {
       color: 'rgb(' + color + ')',
     });

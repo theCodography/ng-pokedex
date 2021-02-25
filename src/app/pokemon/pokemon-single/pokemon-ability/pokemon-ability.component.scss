@@ -26,16 +26,17 @@
 }
 
 .isHidden {
-  border: 1px solid;
+  // border: 1px solid;
   margin-bottom: 0.5rem;
   display: flex;
   margin-top: 1rem;
   padding: 0;
-  overflow: hidden;
+  // overflow: hidden;
 }
 .hidden {
-  padding: 0.78rem 1.25rem;
+  padding: 0.68rem 1.25rem;
   width: 20%;
+  border-radius: .75rem;
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }
@@ -43,8 +44,21 @@
   width: 80%;
   border-radius: 0;
   display: flex;
+  border-radius: .75rem;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
   p {
     width: 75%;
     align-self: center;
+  }
+}
+.border-hidden{
+  border: 2px solid;
+
+  &:first-child{
+    border-right: none;
+  }
+  &:last-child{
+    border-left: none;
   }
 }

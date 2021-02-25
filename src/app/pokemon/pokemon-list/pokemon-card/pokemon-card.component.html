@@ -1,0 +1,44 @@
+<div class="card card__pokemon">
+  <a [routerLink]="['/pokemon', pokemon.id]" class="pokemon__info-link">
+    <div
+      class="pokemon__info"
+      [style.border-color]="'rgb(' + [pokemon.color] + ')'"
+      [style.background]="'rgba(' + [pokemon.color] + ',0.9)'"
+    >
+      <img class="card-img-top" [src]="pokemon.sprite" alt="" crossorigin />
+    </div>
+  </a>
+  <div
+    class="card-body"
+    [style.border-color]="'rgb(' + [pokemon.color] + ')'"
+    [style.background]="'rgba(' + [pokemon.color] + ',0.7)'"
+  >
+    <p class="pokemon__name" [style.color]="'rgb(' + [pokemon.darkColor] + ')'">
+      {{ pokemon.name }}
+    </p>
+
+    <div *ngIf="pokemon._types?.length === 2" class="pokemon__types">
+      <button
+        class="pokemon__2-type"
+        [style.color]="'rgba(' + [pokemon.textColor] + ',0.9)'"
+      >
+        {{ pokemon._types[0].type }}
+      </button>
+      <button
+        class="pokemon__2-type"
+        [style.color]="'rgba(' + [pokemon.textColor] + ',0.9)'"
+      >
+        {{ pokemon._types[1].type }}
+      </button>
+    </div>
+    <div *ngIf="pokemon._types?.length === 1" class="pokemon__types">
+      <button
+        class="pokemon__1-type"
+        [style.color]="'rgba(' + [pokemon.textColor] + ',0.9)'"
+      >
+        {{ pokemon._types[0].type }}
+      </button>
+    </div>
+  </div>
+</div>
+

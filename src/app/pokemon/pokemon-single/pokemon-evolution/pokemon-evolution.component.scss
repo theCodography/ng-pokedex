@@ -1,0 +1,44 @@
+.evolution {
+  background: white;
+  padding: 30px;
+  border-radius: .75rem;
+  margin-bottom: 5rem;
+  height: 400px;
+}
+.w-24{
+  width: 24%;
+}
+.w-40{
+  width: 40%;
+}
+.evo__wrapper {
+  position: relative;
+}
+.evo__wrapper:first-child > .arrow {
+  display: none;
+}
+.top-left-3 {
+  top: 40%;
+  left: -40%;
+}
+.top-left-2 {
+  top: 40%;
+  left: -31%;
+}
+.arrow {
+  position: absolute;
+
+  color: rgba($color: #333, $alpha: .7);
+  text-align: center;
+  i{
+    font-size: 30px;
+  }
+
+}
+
+.evo__trigger {
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+

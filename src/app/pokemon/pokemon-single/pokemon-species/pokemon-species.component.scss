@@ -12,16 +12,19 @@
     &-content {
       background-color: #fff;
       font-size: 1.5rem;
-      border-radius: .75rem;
+      border-radius: 0.75rem;
       padding: 1.2rem;
+
       p {
-        font-size: 16px;
-        height: 130px;
+        font-size: 15px;
+        height: 180px;
         border: 1px solid rgba($color: #333333, $alpha: 0.3);
-        border-radius: .75rem;
+        border-radius: 0.75rem;
         padding: 1.2rem;
         color: #666;
         text-align: center;
+        display: table-cell;
+        vertical-align: middle;
       }
     }
   }

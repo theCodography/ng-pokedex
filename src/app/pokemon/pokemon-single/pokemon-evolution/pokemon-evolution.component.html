@@ -1,0 +1,44 @@
+<div class="evolution d-flex justify-content-between" *ngIf="evolution">
+
+  <ng-container [ngSwitch]="evolution.length">
+    <!--* If evolution = 1 -->
+    <ng-container *ngSwitchCase="1">
+      <ng-container *ngIf="evolution[0].pokemonEntry" >
+
+        <app-pokemon-card class="w-100" [pokemon]="evolution[0].pokemonEntry"> </app-pokemon-card>
+      </ng-container>
+    </ng-container>
+    <!--* If evolution = 2 -->
+    <ng-container *ngSwitchCase="2">
+      <div class="evo__wrapper w-40" *ngFor="let item of evolution">
+        <ng-container *ngIf="item.pokemonEntry">
+          <app-pokemon-card [pokemon]="item.pokemonEntry"> </app-pokemon-card>
+        </ng-container>
+        <div class="arrow top-left-2">
+          <i class="fas fa-arrow-right"></i>
+          <div class="evo__trigger">
+            Level {{item.minLevel}}
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <!--* If evolution = 3 -->
+    <ng-container *ngSwitchCase="3">
+
+      <div class="evo__wrapper w-24" *ngFor="let item of evolution">
+        <ng-container *ngIf="item.pokemonEntry">
+
+          <app-pokemon-card [pokemon]="item.pokemonEntry"> </app-pokemon-card>
+        </ng-container>
+        <div class="arrow top-left-3">
+          <i class="fas fa-arrow-right"></i>
+          <div class="evo__trigger">
+            Level {{item.minLevel}}
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+
+
+</div>

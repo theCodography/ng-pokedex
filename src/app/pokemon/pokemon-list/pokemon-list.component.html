@@ -2,42 +2,7 @@
   <div class="row">
     <div *ngFor="let poke of pokemon" class="col-md-3 col-sm-4 col-6">
       <div class="card card__pokemon">
-        <app-pokemon-list-img [pokemonImg]="poke"> </app-pokemon-list-img>
-        <div
-          class="card-body"
-          [style.border-color]="'rgb(' + [poke.color] + ')'"
-          [style.background]="'rgba(' + [poke.color] + ',0.7)'"
-        >
-          <p
-            class="pokemon__name"
-            [style.color]="'rgb(' + [poke.darkColor] + ')'"
-          >
-            {{ poke.name }}
-          </p>
-
-          <div *ngIf="poke._types?.length === 2" class="pokemon__types">
-            <button
-              class="pokemon__2-type"
-              [style.color]="'rgba(' + [poke.textColor] + ',0.9)'"
-            >
-              {{ poke._types[0].type }}
-            </button>
-            <button
-              class="pokemon__2-type"
-              [style.color]="'rgba(' + [poke.textColor] + ',0.9)'"
-            >
-              {{ poke._types[1].type }}
-            </button>
-          </div>
-          <div *ngIf="poke._types?.length === 1" class="pokemon__types">
-            <button
-              class="pokemon__1-type"
-              [style.color]="'rgba(' + [poke.textColor] + ',0.9)'"
-            >
-              {{ poke._types[0].type }}
-            </button>
-          </div>
-        </div>
+        <app-pokemon-card [pokemon]="poke"></app-pokemon-card>
       </div>
     </div>
   </div>

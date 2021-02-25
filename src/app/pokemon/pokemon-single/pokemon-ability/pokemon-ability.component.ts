@@ -25,9 +25,14 @@ export class PokemonAbilityComponent implements OnInit {
       let items: any = document.getElementsByClassName('ability__item');
       let hidden: any = document.getElementById('isHidden');
       let value: any = document.getElementById('hiddenValue');
-      hidden.style.borderColor = 'rgb(' + this.baseInfo.color + ')';
-      value.style.background = 'rgba(255,255,255,.8)';
-      // let progressBar: any = document.getElementsByClassName('progress-bar');
+      let borderHidden: any = document.getElementsByClassName('border-hidden');
+      if(hidden){
+        for (let i = 0; i < borderHidden.length; i++) {
+          let element = borderHidden[i];
+          element.style.borderColor = 'rgb(' + this.baseInfo.color + ')';
+        }
+        value.style.background = 'rgba(255,255,255,.8)';
+      }
 
       for (let i = 0; i < items.length; i++) {
         let element = items[i];

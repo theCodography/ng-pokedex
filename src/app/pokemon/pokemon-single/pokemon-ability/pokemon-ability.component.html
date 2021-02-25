@@ -6,8 +6,8 @@
       <ng-container *ngFor="let abi of ability">
         <ng-template #hidden>
           <div id="isHidden" class="ability__item isHidden">
-            <div class="hidden">Hidden</div>
-            <div id="hiddenValue" class="value">
+            <div class="hidden border-hidden">Hidden</div>
+            <div id="hiddenValue" class="value border-hidden">
               <p>
                 {{ abi.name }}
               </p>
@@ -30,8 +30,8 @@
         </div>
       </div>
       <div id="isHidden" class="ability__item isHidden">
-        <div class="hidden">Hidden</div>
-        <div id="hiddenValue" class="value">
+        <div class="hidden border-hidden">Hidden</div>
+        <div id="hiddenValue" class="value border-hidden">
           <p>
             {{ ability[2].name }}
           </p>

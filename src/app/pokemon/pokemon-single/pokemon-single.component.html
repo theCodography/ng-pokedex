@@ -19,12 +19,13 @@
           >
             <a
               class="pokemon-slider__link"
-              (click)="clickBack()"
               [routerLink]="['/pokemon', pokemonCurrent.baseInfo.id - 1]"
             >
               <i
                 class="fas fa-chevron-circle-left"
-                [style.color]="'rgb(' + [pokemonCurrent.baseInfo.darkColor] + ')'"
+                [style.color]="
+                  'rgb(' + [pokemonCurrent.baseInfo.darkColor] + ')'
+                "
               ></i>
             </a>
 
@@ -32,7 +33,7 @@
               class="pokemon-slider__sub-name pokemon-slider__sub-name--left"
               *ngIf="pokemonBefore"
             >
-              {{ pokemonBefore.baseInfo.name }}
+              {{ pokemonBefore.baseInfo.name | gender }}
             </span>
           </div>
           <ng-template #noSlider>
@@ -52,7 +53,9 @@
             </div>
           </ng-template>
           <!--* Slider Center -->
-          <div class="pokemon-slider__wrapper pokemon-slider__main d-flex flex-column text-center">
+          <div
+            class="pokemon-slider__wrapper pokemon-slider__main d-flex flex-column text-center"
+          >
             <div class="pokemon-slider__main-id">
               #{{ pokemonCurrent.baseInfo.id | number: "3.0" }}
             </div>
@@ -60,7 +63,7 @@
               class="pokemon-slider__main-name"
               [style.color]="'rgb(' + [pokemonCurrent.baseInfo.darkColor] + ')'"
             >
-              {{ pokemonCurrent.baseInfo.name }}
+              {{ pokemonCurrent.baseInfo.name | gender }}
             </div>
           </div>
           <!--* Slider Right  -->
@@ -71,16 +74,17 @@
               class="pokemon-slider__sub-name pokemon-slider__sub-name--right"
               *ngIf="pokemonNext"
             >
-              {{ pokemonNext.baseInfo.name }}
+              {{ pokemonNext.baseInfo.name | gender }}
             </span>
             <a
               class="pokemon-slider__link"
-              (click)="clickNext()"
               routerLink="/pokemon/{{ pokemonCurrent.baseInfo.id + 1 }}"
             >
               <i
                 class="fas fa-chevron-circle-right"
-                [style.color]="'rgb(' + [pokemonCurrent.baseInfo.darkColor] + ')'"
+                [style.color]="
+                  'rgb(' + [pokemonCurrent.baseInfo.darkColor] + ')'
+                "
               ></i>
             </a>
           </div>
@@ -135,6 +139,11 @@
           [pokemonCurrent]="pokemonCurrent?.stats"
         ></app-pokemon-stats>
       </div>
+      <!-- *Evolution -->
+      <app-pokemon-evolution
+        [evolution]="pokemonCurrent?.evolutionChain"
+      ></app-pokemon-evolution>
     </div>
   </div>
 </section>
+
